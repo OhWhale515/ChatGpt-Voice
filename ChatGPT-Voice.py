@@ -24,7 +24,7 @@ def generate_response(prompt):
         prompt=prompt,
         max_tokens=4000,
         n=1,
-        stop=none,
+        stop=None,
         temperature=0.5,
     )
     return response["choices"][0]["text"]
@@ -46,7 +46,7 @@ def main():
                     # Records the audio
                     filename = "input.wav"
                     print("Say your question...")
-                    with sr.Microphine() as source:
+                    with sr.Microphone() as source:
                         recognizer = sr.Recognizer()
                         source.pause_threshold = 1
                         audio = recognizer.listen(source, phrase_time_limit=None, timeout=None)
