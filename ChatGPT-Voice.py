@@ -22,8 +22,52 @@ def generate_response(prompt):
     response =  openai.Completion.create(
         engine="text-davinci-003",
         prompt=prompt,
-        max_tokens=400,
+        max_tokens=4000,
         n=1,
         stop=none,
         temperature=0.5,
     )
+    return response["choices"][0]["text"]
+
+def speak_text(text):
+    engine.say(text)
+    engine.runAndWait()
+    
+def main():
+    while True:
+        # Wait for user to say "ANY KEY WORD"
+        print("Say 'yo big bro' to start recording your question...")
+        with sr.Microphone() as source:
+            recognizer = sr.Recognizer()
+            audio = recognizer.listen(source)
+            try:
+                transcription = recognizer.recognize_google(audio)
+                if transcription.lower() == 'yo big bro':
+                    # Records the audio
+                    filename = "input.wav"
+                    print("Say your question...")
+                    with sr.Microphine() as source:
+                        recognizer = sr.Recognizer()
+                        source.pause_threshold = 1
+                        audio = recognizer.listen(source, phrase_time_limit=None, timeout=None)
+                        with open(filename, "wb") as f:
+                            f.write(audio.get_wav_data())
+                    
+                    # audio to text
+                    text = transcribe_audio_to_text(filename)
+                    if text:
+                        print(f"You said: {text}")
+                        
+                        # generate response using GPT-3
+                        response = generate_response(text)
+                        print(f"GPT-3 says: {response}")
+                        
+                        # read response using text-to-speech
+                        speak_text(response)
+            except Exception as e:
+                print("An error occurred: {}".format(e))
+                
+if __name__ == "__main__":
+    main()
+                        
+                        
