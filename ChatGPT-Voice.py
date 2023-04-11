@@ -17,3 +17,13 @@ def transcribe_audio_to_text(filename):
         return recognizer.recognize_google(audio)
     except:
         print("Skipping unknown error")
+
+def generate_response(prompt):
+    response =  openai.Completion.create(
+        engine="text-davinci-003",
+        prompt=prompt,
+        max_tokens=400,
+        n=1,
+        stop=none,
+        temperature=0.5,
+    )
